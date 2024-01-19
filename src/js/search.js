@@ -22,4 +22,4 @@ btnReset.appendChild(btnResetText);
 
 searchSection.appendChild(btnReset);
 
-const inputSearchValue = inputSearch.value;
+
