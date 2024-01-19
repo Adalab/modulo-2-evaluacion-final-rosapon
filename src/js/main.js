@@ -1,28 +1,28 @@
 'use strict';
 
+import '/search.js';
 
 
-const h1 = document.createElement('h3');
-const h1Title = document.createTextNode('Buscador de series de anime');
-h1.appendChild(h1Title);
+let resultAnimes = [];
+let favAnimes = [];
+const url = "https://api.jikan.moe/v4/anime"
 
-const searchSection = document.querySelector('.js-search-section');
+function getDataApi() {
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        resultAnimes = data.data;
+        console.log(resultAnimes);
 
-searchSection.appendChild(h1);
+        //aquí irá luego la función render y lo de meterlo en el localstorage
 
-const inputSearch = document.createElement('input')
-inputSearch.type = 'text';
-searchSection.appendChild(inputSearch);
+       
 
-const btnSearch = document.createElement('button');
-const btnSearchText = document.createTextNode('Buscar');
-btnSearch.appendChild(btnSearchText);
+        
+       
+    })
 
-searchSection.appendChild(btnSearch);
+}
 
-const btnReset = document.createElement('button');
-const btnResetText = document.createTextNode('Reset');
-btnReset.appendChild(btnResetText);
-
-searchSection.appendChild(btnReset);
+getDataApi();
 
