@@ -25,21 +25,21 @@ getDataApi();
 
 function renderAnime() {
     let inputSearchValue = inputSearch.value;
-    console.log(inputSearchValue);
-    let result = "";
+    
+    resultContainer.innerHTML = "";
 
-    let userSearch = resultAnimes.filter((item) => item.title.includes(inputSearchValue));
+    let userSearch = resultAnimes.filter((item) => item.title.toLowerCase().includes(inputSearchValue.toLowerCase()));
     
     for (const eachAnime of userSearch) {
     
-        result += ` <div class="js-allAnimes">
+        resultContainer.innerHTML += ` <div class="js-allAnimes">
         <div class="js-animeCard">
             <h3 class="js-animeTitle">${eachAnime.title}</h3>
             <img src="${eachAnime.images.jpg.image_url}" alt="cartel de ${eachAnime.title}" class="js-animeImage">
         </div>
     </div>`
     }
-    resultContainer.innerHTML = result;
+   
     
 };
             
