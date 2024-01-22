@@ -203,6 +203,14 @@ const listenerDeleteBtn = () => {
 listenerDeleteBtn();
 
 
+const deleteFavs = () => {
+    favsContainer.innerHTML = "";
+    console.log("borrar");
+}
+
+
+const deleteFavsBtn = document.querySelector('.favourites--deleteBtn');
+deleteFavsBtn.addEventListener('click', deleteFavs)
 
 btnSearch.addEventListener('click',getDataApi);
 btnReset.addEventListener('click', handleReset)
