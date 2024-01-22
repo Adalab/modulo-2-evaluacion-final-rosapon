@@ -8,7 +8,6 @@ let resultAnimes = [];
 let favAnimes = [];
 const url = "https://api.jikan.moe/v4/anime?q="
 let resultContainer = document.querySelector('.js-animeList');
-
 const favsContainer = document.querySelector('.js-favsList');
 
 
@@ -39,7 +38,10 @@ function handleFavAnimes(event) {
 
     if(indexAnimesInFav === -1) {
         favAnimes.push(foundAnime);
-       localStorage.setItem('Series favoritas', JSON.stringify(favAnimes));
+        let localAnimes = localStorage.getItem('Series favoritas');
+        localAnimes = localAnimes ? JSON.parse(localAnimes) : [];
+        localAnimes.push(foundAnime);
+        localStorage.setItem('Series favoritas', JSON.stringify(localAnimes));
 
        
     }   
@@ -51,15 +53,17 @@ function handleFavAnimes(event) {
     
 }
 
-
  
 function getDataLocal() {
     let localAnimes = localStorage.getItem('Series favoritas');
-    localAnimes = JSON.parse(localAnimes);
+    localAnimes = JSON.parse(localAnimes) || [];
     for (const eachLocal of localAnimes) {
         favsContainer.innerHTML += ` 
         <li  class="js-animeCard favs" id=${eachLocal.mal_id}>
-            <h3 class="js-animeTitle">${eachLocal.title}</h3><i class="fa-regular fa-circle-xmark"></i>
+        <div class= "card-title">
+            <h3 class="js-animeTitle">${eachLocal.title} </h3>
+            <i class="fa-solid fa-circle-xmark js-deleteCard"></i>
+        </div>
             <img src="${eachLocal.images.jpg.image_url}" alt="cartel de ${eachLocal.title}" class="js-animeImage">
         </li>`
     }
@@ -101,7 +105,10 @@ function renderAnime() {
 
         resultContainer.innerHTML += ` 
         <li  class="js-animeCard" id=${eachAnime.mal_id}>
-            <h3 class="js-animeTitle">${eachAnime.title}</h3><i class="fa-regular fa-circle-xmark"></i>
+         <div class= "card-title">
+            <h3 class="js-animeTitle">${eachAnime.title} </h3>
+            <i class="fa-solid fa-circle-xmark js-deleteCard"></i>
+         </div>
             <img src="${noImageImage}" alt="cartel de ${eachAnime.title}" class="js-animeImage">
         </li>`
 
@@ -109,7 +116,10 @@ function renderAnime() {
     
         resultContainer.innerHTML += `
         <li class="js-animeCard" id=${eachAnime.mal_id}>
-            <h3 class="js-animeTitle">${eachAnime.title}</h3><i class="fa-regular fa-circle-xmark"></i>
+          <div class= "card-title">
+            <h3 class="js-animeTitle">${eachAnime.title} </h3>
+            <i class="fa-solid fa-circle-xmark js-deleteCard" id=${eachAnime.mal_id}></i>
+         </div>
             <img src="${eachAnime.images.jpg.image_url}" alt="cartel de ${eachAnime.title}" class="js-animeImage">
         </li>`
     }
@@ -123,23 +133,52 @@ listenerAnimes()
 
 const renderFav = () => {
     for (const eachFav of favAnimes) {
-        
     
         const renderedFavAnimes = favsContainer.querySelector(`[id="${eachFav.mal_id}"]`);
 
         if (!renderedFavAnimes) {
             favsContainer.innerHTML += `<li class="js-animeCard favs" id=${eachFav.mal_id}>
-                <h3 class="js-animeTitle">${eachFav.title}</h3><i class="fa-regular fa-circle-xmark"></i>
+            <div class= "card-title">
+            <h3 class="js-animeTitle">${eachFav.title} </h3>
+            <i class="fa-solid fa-circle-xmark js-deleteCard" id=${eachFav.mal_id}></i>
+         </div>
                 <img src="${eachFav.images.jpg.image_url}" alt="cartel de ${eachFav.title}" class="js-animeImage">
             </li>`;
-            console.log("fav");
+
         }
     }
 };
 
+const handleReset =( ) => {
+    localStorage.clear();
+    favsContainer.innerHTML = "";
+    resultContainer.innerHTML = "";
+    inputSearch.Value = "";
+}
+
+
+const deleteCard = (event) => {
+ 
+    const clickedFavAnime = event.currentTarget;
+    const clickedFavAnimeId = clickedFavAnime.id;
+    
+    console.log(clickedFavAnime);
+
+
+
+   // localStorage.removeItem('clave_del_elemento');
+
+    //obeter el id del anime clicado
+    //borrarlo del array con splice
+
+}
+
+const deleteCardButton = document.querySelector('.js-deleteCard');
 
 
 btnSearch.addEventListener('click',getDataApi);
+btnReset.addEventListener('click', handleReset)
+deleteCardButton.addEventListener('click', deleteCard)
 
 
 
