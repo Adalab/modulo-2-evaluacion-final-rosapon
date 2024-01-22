@@ -1,18 +1,85 @@
+body {
+    background-color: rgb(0, 0, 0);
+}
+
+.title {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+    color: palevioletred;
+    font-size: 20px;
+
+}
+
+
 .favs {
     background-color: pink;
 }
 
 .js-animeCard {
-    width: 350px;
-    padding-left: 25px;
+    width: 250px;
+    border: solid 7px white;
+   
+
+   
+   
 }
 
 
 .js-animeList, .js-favsList {
     list-style: none;
+    margin-left: 30px;
+    gap: 10px;
+  
 }
 
 .fa-solid {
     font-size: 20px;
     color: black;
+}
+
+.mainContainer {
+display: flex;
+gap: 20px;
+}
+
+
+.js-favsList {
+    border: solid 3px pink;
+    background-color: rgb(250, 217, 222);
+    
+}
+.js-animeList {
+    border: solid 3px cadetblue;
+    background-color: rgb(149, 163, 163);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.favourites {
+    width: 340px;
+
+    &--title {
+        color: pink;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        text-transform: uppercase;
+        margin-left: 30px;
+    }
+    
+}
+
+.results {
+    width: 70vw;
+}
+
+.results--title {
+    color: cadetblue;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-transform: uppercase;
+    margin-left: 30px;
+}
+
+.inputSection {
+    margin-left: 30px;
+
+   
 }

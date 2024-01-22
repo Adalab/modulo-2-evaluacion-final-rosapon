@@ -40,8 +40,14 @@ function handleFavAnimes(event) {
         favAnimes.push(foundAnime);
         let localAnimes = localStorage.getItem('Series favoritas');
         localAnimes = localAnimes ? JSON.parse(localAnimes) : [];
-        localAnimes.push(foundAnime);
-        localStorage.setItem('Series favoritas', JSON.stringify(localAnimes));
+
+        const indexInLocalStorage = localAnimes.findIndex((anime) => anime.mal_id === idAnimeClicked);
+
+        if (indexInLocalStorage === -1) {
+            localAnimes.push(foundAnime);
+            localStorage.setItem('Series favoritas', JSON.stringify(localAnimes));
+        }
+
 
        
     }   
@@ -62,7 +68,7 @@ function getDataLocal() {
         <li  class="js-animeCard favs" id=${eachLocal.mal_id}>
         <div class= "card-title">
             <h3 class="js-animeTitle">${eachLocal.title} </h3>
-            <i class="fa-solid fa-circle-xmark js-deleteCard"></i>
+            <i class="fa-solid fa-circle-xmark js-deleteCard" id=${eachLocal.mal_id}></i>
         </div>
             <img src="${eachLocal.images.jpg.image_url}" alt="cartel de ${eachLocal.title}" class="js-animeImage">
         </li>`
@@ -100,14 +106,20 @@ function renderAnime() {
     const noImageImage = "https://t3.ftcdn.net/jpg/04/62/93/66/360_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg"
 
     for (const eachAnime of userSearch) {
+
+        let localAnimes = localStorage.getItem('Series favoritas');
+        localAnimes = JSON.parse(localAnimes) || [];
+        const isFav = localAnimes.some(localAnimes => localAnimes.mal_id === eachAnime.mal_id);
+
     
         if (eachAnime.images.jpg.image_url === null) {
 
         resultContainer.innerHTML += ` 
-        <li  class="js-animeCard" id=${eachAnime.mal_id}>
+        <li  class="js-animeCard ${isFav ? 'favs' : ''}" id=${eachAnime.mal_id}>
          <div class= "card-title">
+     
             <h3 class="js-animeTitle">${eachAnime.title} </h3>
-            <i class="fa-solid fa-circle-xmark js-deleteCard"></i>
+           
          </div>
             <img src="${noImageImage}" alt="cartel de ${eachAnime.title}" class="js-animeImage">
         </li>`
@@ -115,15 +127,13 @@ function renderAnime() {
         } else {
     
         resultContainer.innerHTML += `
-        <li class="js-animeCard" id=${eachAnime.mal_id}>
+        <li class="js-animeCard ${isFav ? 'favs' : ''}" id=${eachAnime.mal_id}>
           <div class= "card-title">
             <h3 class="js-animeTitle">${eachAnime.title} </h3>
-            <i class="fa-solid fa-circle-xmark js-deleteCard" id=${eachAnime.mal_id}></i>
          </div>
             <img src="${eachAnime.images.jpg.image_url}" alt="cartel de ${eachAnime.title}" class="js-animeImage">
         </li>`
     }
-
 
 }
 listenerAnimes()
@@ -159,26 +169,44 @@ const handleReset =( ) => {
 
 const deleteCard = (event) => {
  
-    const clickedFavAnime = event.currentTarget;
+    const clickedFavAnime = event.target;
     const clickedFavAnimeId = clickedFavAnime.id;
     
-    console.log(clickedFavAnime);
+    let localAnimes = localStorage.getItem('Series favoritas');
+    localAnimes = JSON.parse(localAnimes) || [];
+
+    const indexOfAnimeToDelete = localAnimes.findIndex(anime => anime.mal_id === clickedFavAnimeId);
 
 
+    localAnimes.splice(indexOfAnimeToDelete, 1);
+    localStorage.setItem('Series favoritas', JSON.stringify(localAnimes));
+    console.log(localAnimes);
 
-   // localStorage.removeItem('clave_del_elemento');
+   
 
-    //obeter el id del anime clicado
-    //borrarlo del array con splice
 
 }
 
-const deleteCardButton = document.querySelector('.js-deleteCard');
+
+
+const deleteButtons = document.querySelectorAll('.js-deleteCard');
+
+const listenerDeleteBtn = () => {
+
+    for (const eachButton of deleteButtons) {
+        eachButton.addEventListener('click', deleteCard);
+
+    }
+}
+
+
+listenerDeleteBtn();
+
 
 
 btnSearch.addEventListener('click',getDataApi);
 btnReset.addEventListener('click', handleReset)
-deleteCardButton.addEventListener('click', deleteCard)
+
 
 
 
